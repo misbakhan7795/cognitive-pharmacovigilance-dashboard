@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+
+data/reviews/
+data/raw/
+*.csv
+
+models/
+.cache/
+.ipynb_checkpoints/
