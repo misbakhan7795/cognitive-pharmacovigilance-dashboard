@@ -26,18 +26,21 @@ with open(
 
 print("Ready")
 
-def search_faers(
-    query,
-    k=5
-):
+def search_faers(query, k=20):
 
     q = model.encode([query])
 
     D, I = index.search(q, k)
 
+    seen = set()
     results = []
 
     for idx in I[0]:
-        results.append(texts[idx])
 
-    return results
+        text = texts[idx]
+
+        if text not in seen:
+            seen.add(text)
+            results.append(text)
+
+    return results[:5]

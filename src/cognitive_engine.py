@@ -1,42 +1,34 @@
+import os
 import google.generativeai as genai
+from dotenv import load_dotenv
+
+load_dotenv()
 
 genai.configure(
-    api_key="YOUR_API_KEY"
+    api_key=os.getenv("GEMINI_API_KEY")
 )
 
 model = genai.GenerativeModel(
     "gemini-2.5-flash"
 )
 
-def generate_safety_summary(
-    drug,
-    sentiment,
-    faers_results
-):
+def generate_safety_summary(drug, fda_data):
 
     prompt = f"""
-Drug:
-{drug}
+Drug: {drug}
 
-Patient Sentiment:
-{sentiment}
+FDA Signals:
+{fda_data}
 
-FDA Evidence:
-{faers_results}
-
-Generate:
+Provide:
 
 1. Safety Summary
+2. Common Risks
+3. Recommendation
 
-2. Major Risks
-
-3. Confidence Level
-
-4. Recommendation
+Keep it concise.
 """
 
-    response = model.generate_content(
-        prompt
-    )
+    response = model.generate_content(prompt)
 
     return response.text

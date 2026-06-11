@@ -1,0 +1,214 @@
+/* =========================
+   FONT (Enterprise Standard)
+========================= */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* =========================
+   ROOT THEME (CLEANED)
+========================= */
+:root {
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8;
+
+  --success: #16a34a;
+  --warning: #f59e0b;
+  --danger: #dc2626;
+
+  --bg: #f8fafc;
+  --card: #ffffff;
+
+  --border: #e2e8f0;
+
+  --text: #0f172a;
+  --text-light: #64748b;
+
+  --font-family: "Inter", sans-serif;
+}
+
+/* =========================
+   GLOBAL BASE STYLES
+========================= */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+.gradio-container {
+  font-family: var(--font-family) !important;
+  background: var(--bg) !important;
+  max-width: 1400px !important;
+  margin: auto !important;
+  padding: 24px !important;
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+.hero {
+  background: var(--card);
+  padding: 35px;
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 18px;
+  color: var(--text-light);
+  margin-bottom: 15px;
+}
+
+/* Badges */
+.hero .badges span {
+  display: inline-block;
+  background: #eef2ff;
+  color: var(--primary);
+  padding: 6px 12px;
+  margin: 4px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* =========================
+   KPI CARDS
+========================= */
+.kpi-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+/* Optional number styling if you add later */
+.kpi-number {
+  font-size: 42px;
+  font-weight: 800;
+  color: var(--primary);
+}
+
+/* =========================
+   INPUTS
+========================= */
+input, textarea, select, .gr-text-input {
+  background: #ffffff !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 10px !important;
+  padding: 12px 14px !important;
+  font-family: var(--font-family) !important;
+  color: var(--text) !important;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--primary) !important;
+  box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15) !important;
+  outline: none !important;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+button.primary {
+  background: var(--primary) !important;
+  color: white !important;
+  border-radius: 10px !important;
+  border: none !important;
+  font-weight: 600 !important;
+  transition: 0.2s ease;
+}
+
+button.primary:hover {
+  background: var(--primary-dark) !important;
+  transform: translateY(-1px);
+}
+
+/* Secondary button */
+button.secondary {
+  background: white !important;
+  border: 1px solid var(--border) !important;
+  color: var(--text) !important;
+}
+
+/* =========================
+   TABS (PILL STYLE FIX)
+========================= */
+.tabs {
+  background: white !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+  padding: 6px !important;
+}
+
+.tab-nav button {
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  color: var(--text-light) !important;
+}
+
+.tab-nav button.selected {
+  background: var(--primary) !important;
+  color: white !important;
+}
+
+/* =========================
+   TABLES
+========================= */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: #f1f5f9;
+  text-align: left;
+  padding: 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+/* =========================
+   SCROLLBAR
+========================= */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* =========================
+   FOOTER REMOVAL
+========================= */
+footer {
+  display: none !important;
+}

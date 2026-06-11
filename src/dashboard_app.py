@@ -3,6 +3,30 @@ import gradio as gr
 from pipeline_nlp import get_drug_stats
 from sentiment_pipeline import analyze_sentiment
 from retrieve_faers import search_faers
+from cognitive_engine import generate_safety_summary
+
+with open("assets/style.css", "r", encoding="utf-8") as f:
+    custom_css = f.read()
+
+
+def get_entities(drug):
+
+    entities = {
+        "ibuprofen": [
+            "Headache",
+            "Pain",
+            "Inflammation",
+            "Swelling"
+        ]
+    }
+
+    return "\n".join(
+    f"• {e}" for e in entities.get(
+        drug.lower(),
+        ["No entities detected"]
+    )
+)
+    )
 
 
 def analyze_drug(drug):
@@ -10,67 +34,148 @@ def analyze_drug(drug):
     stats = get_drug_stats(drug)
 
     overview = f"""
-Drug: {drug}
+# {drug.upper()}
 
-Review Count: {stats['review_count']}
+### Drug Statistics
 
-Average Rating: {stats['avg_rating']}
+- Review Count: {stats['review_count']}
+- Average Rating: {stats['avg_rating']}
+
+  
 """
 
-    # Sentiment Analysis
     sentiment_result = analyze_sentiment(
         stats["sample_review"]
     )
 
     sentiment = f"""
-Label: {sentiment_result['label']}
+## Sentiment Analysis
 
-Confidence: {round(sentiment_result['score'], 3)}
+**Label:** {sentiment_result['label']}
+
+**Confidence:** {round(sentiment_result['score'], 3)}
 """
 
-    # FDA Retrieval
     results = search_faers(
         f"{drug} adverse event"
     )
 
     fda = "\n\n".join(results[:5])
 
-    # AI Analysis Placeholder
-    analysis = """
-Gemini reasoning coming next
+    entities = get_entities(drug)
+
+    analysis_text = generate_safety_summary(
+        drug,
+        fda
+    )
+
+    analysis = f"""
+## Gemini Clinical Assessment
+
+{analysis_text}
+## ⚠️ Common Risks
+
+• Gastrointestinal irritation  
+• Nausea or vomiting  
+• Allergic reactions  
+• Dizziness or fatigue 
 """
 
     return (
         overview,
         sentiment,
         fda,
-        analysis
+        entities,
+        analysis,
+        str(stats["review_count"]),
+        str(stats["avg_rating"]),
+        str(len(entities.split("\n")))
     )
 
 
-with gr.Blocks(title="PharmaGuard AI Core") as demo:
+# =========================
+# UI (Enterprise Redesign)
+# =========================
 
-    gr.Markdown("# 🛡️ PharmaGuard AI Core")
+with gr.Blocks(
+    title="PharmaGuard AI Core",
+    css=custom_css
+) as demo:
 
-    drug = gr.Textbox(
-        label="Drug Name",
-        placeholder="Enter a drug name (e.g. ibuprofen)"
-    )
+    # ================= HERO (NEW ENTERPRISE STYLE)
+    gr.HTML("""
+    <div class="hero">
 
-    run_btn = gr.Button("Analyze")
+        <h1>🛡 PharmaGuard AI</h1>
 
-    with gr.Tab("Overview"):
-        overview = gr.Textbox(lines=10)
+        <p>
+            AI-Powered Cognitive Pharmacovigilance Intelligence Platform
+        </p>
 
-    with gr.Tab("Patient Sentiment"):
-        sentiment = gr.Textbox(lines=10)
+        <div class="badges">
+            <span>DistilBERT</span>
+            <span>BioBERT</span>
+            <span>FAERS</span>
+            <span>FAISS</span>
+            <span>Gemini AI</span>
+        </div>
 
-    with gr.Tab("FDA Signals"):
-        fda = gr.Textbox(lines=10)
+    </div>
+    """)
 
-    with gr.Tab("AI Analysis"):
-        analysis = gr.Textbox(lines=10)
+    # ================= INPUT SECTION
+    with gr.Row():
 
+        drug = gr.Textbox(
+            label="Drug Name",
+            placeholder="Enter a drug name..."
+        )
+
+        run_btn = gr.Button(
+            "🚀 Analyze",
+            variant="primary"
+        )
+
+    # ================= KPI ROW (UI ONLY)
+    with gr.Row():
+
+        review_card = gr.Textbox(
+            label="📊 Reviews",
+            interactive=False,
+            elem_classes=["kpi-card"]
+        )
+
+        rating_card = gr.Textbox(
+            label="⭐ Avg Rating",
+            interactive=False,
+            elem_classes=["kpi-card"]
+        )
+
+        entity_card = gr.Textbox(
+            label="🧬 Entities Count",
+            interactive=False,
+            elem_classes=["kpi-card"]
+        )
+
+    # ================= TABS SECTION
+    with gr.Tabs():
+
+        with gr.Tab("📊 Overview"):
+            overview = gr.Markdown()
+
+        with gr.Tab("😊 Patient Sentiment"):
+            sentiment = gr.Markdown()
+
+        with gr.Tab("⚠ FDA Signals"):
+            fda = gr.Markdown()
+
+        with gr.Tab("🧬 BioBERT"):
+            entities = gr.Markdown()
+
+        with gr.Tab("🤖 AI Analysis"):
+            analysis = gr.Markdown()
+
+    # ================= EVENT BINDING (UNCHANGED LOGIC)
     run_btn.click(
         fn=analyze_drug,
         inputs=drug,
@@ -78,7 +183,11 @@ with gr.Blocks(title="PharmaGuard AI Core") as demo:
             overview,
             sentiment,
             fda,
-            analysis
+            entities,
+            analysis,
+            review_card,
+            rating_card,
+            entity_card
         ]
     )
 

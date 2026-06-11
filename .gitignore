@@ -1,12 +1,30 @@
 venv/
 .env
+
 __pycache__/
 *.pyc
 
+.cache/
+.ipynb_checkpoints/
+
 data/reviews/
 data/raw/
+
+# Large datasets
+data/faers/ASCII/
+data/processed/faiss_index.bin
+*.bin
+*.txt
 *.csv
 
 models/
-.cache/
-.ipynb_checkpoints/
+
+# FAISS files
+*.bin
+*.pkl
+
+# FAERS raw data
+data/faers/
+
+# VS Code
+.vscode/
