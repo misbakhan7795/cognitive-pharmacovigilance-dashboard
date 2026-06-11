@@ -2,6 +2,7 @@ import gradio as gr
 
 from pipeline_nlp import get_drug_stats
 from sentiment_pipeline import analyze_sentiment
+from retrieve_faers import search_faers
 
 
 def analyze_drug(drug):
@@ -16,7 +17,7 @@ Review Count: {stats['review_count']}
 Average Rating: {stats['avg_rating']}
 """
 
-    # Run sentiment analysis on one sample review
+    # Sentiment Analysis
     sentiment_result = analyze_sentiment(
         stats["sample_review"]
     )
@@ -27,10 +28,14 @@ Label: {sentiment_result['label']}
 Confidence: {round(sentiment_result['score'], 3)}
 """
 
-    fda = """
-FAERS integration coming next
-"""
+    # FDA Retrieval
+    results = search_faers(
+        f"{drug} adverse event"
+    )
 
+    fda = "\n\n".join(results[:5])
+
+    # AI Analysis Placeholder
     analysis = """
 Gemini reasoning coming next
 """
